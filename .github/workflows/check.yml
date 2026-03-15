@@ -1,0 +1,19 @@
+name: Check Website
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if site is up
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" https://gumyfui.com?directlink=1&code_type=1&sid=941721)
+          echo "Status code: $STATUS"
+          if [ "$STATUS" -eq 200 ]; then
+            echo "✅ الموقع شغال"
+          else
+            echo "❌ الموقع مش شغال - كود: $STATUS"
+            exit 1
+          fi
